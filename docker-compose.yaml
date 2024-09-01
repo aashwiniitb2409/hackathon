@@ -1,0 +1,21 @@
+version: "3.7"
+
+volumes:
+  postgres-data-volume:
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: regression
+      POSTGRES_PASSWORD: regression
+      POSTGRES_DB: regression
+    volumes:
+      - ./initPostgres:/docker-entrypoint-initdb.d/
+      - postgres-data-volume:/var/lib/postgresql/data
+    ports:
+      - "5438:5432"
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
